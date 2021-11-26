@@ -1,0 +1,20 @@
+{
+    "name": "williamsampaio/page-builder",
+    "description": "HTML page builder with php",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "WilliamSampaio\\PageBuilder\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "William Sampaio",
+            "email": "williambenjamimms97@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2"
+    }
+}
