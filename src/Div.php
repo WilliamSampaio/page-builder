@@ -2,13 +2,13 @@
 
 namespace WilliamSampaio\PageBuilder;
 
-class Body extends Element
+class Div extends Element
 {
     public function __construct($innerElements = [])
     {
         parent::__construct($innerElements);
 
-        $this->openTag = '<body _var_>';
-        $this->closeTag = '</body>';
+        $this->openTag = "<div _var_>";
+        $this->closeTag = '</div>';
     }
 }
