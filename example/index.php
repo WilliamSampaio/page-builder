@@ -17,7 +17,13 @@ use WilliamSampaio\PageBuilder\Title;
 
 $name_date = 'William Benjamim Menezes Sampaio, ' . date("d/m/Y H:i:s");
 
-$new_page = (new Html([
+(new Heading([
+    'olá mundo',
+    (new Br)->id('teste'),
+    'cadassistrar'
+], 1))->class('teste...')->detonate();
+
+/*$new_page = (new Html([
 
     // the head tag
     new Head([
@@ -93,4 +99,4 @@ $new_page = (new Html([
 ]))->lang('pt-br');
 
 // função magica que imprimi o HTML!
-$new_page->detonate();
+$new_page->detonate();*/

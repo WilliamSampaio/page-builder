@@ -4,204 +4,48 @@ namespace WilliamSampaio\PageBuilder;
 
 abstract class Element
 {
-    protected string $openTag;
-    protected array $innerElements;
-    protected string $closeTag;
-    protected string $output;
-
-    /**
-     * Método construtor
-     */
-    public function __construct($innerElements = [])
+    protected function get_tag(): string
     {
-        // Inicializa a variavel
-        $this->innerElements = $innerElements;
-        $this->output = '';
+        return '';
     }
 
-    /**
-     * Função que prepara todos os elementos em uma só string
-     */
-    public function prepare()
+    protected function set_tag(string $tag): void
     {
-        $this->output .= $this->openTag;
-
-        if (!empty($this->innerElements)) {
-
-            foreach ($this->innerElements as $element) {
-
-                if ($element instanceof Element) {
-
-                    $this->output .= $element->prepare();
-                } else {
-
-                    $this->output .= $element;
-                }
-            }
-        }
-
-        return $this->output .= $this->closeTag;
+        return;
     }
 
-    /**
-     * Função que "renderiza" o html ^^
-     */
-    public function detonate()
+    protected function prepare(): string
     {
-        echo str_replace('_var_', '', $this->prepare());
+        return '';
     }
 
-    /**
-     * Adiciona um novo elemento filho
-     */
-    public function addChildElement($element)
+    public function detonate(): void
     {
-        $this->innerElement[] = $element;
+        return;
+    }
+
+    public function addChildElements(): Element
+    {
         return $this;
     }
 
-    /**
-     * Adiciona novos elementos filho
-     */
-    public function addChildElements($elements = [])
+    public function getChildElements(): array
     {
+        return [];
+    }
 
-        if (!empty($elements)) {
+    public function getChildElementByTag(string $tag): array
+    {
+        return [];
+    }
 
-            foreach ($elements as $element) {
-
-                $this->innerElements[] = $element;
-            }
-        } else {
-
-            die('Error! Empty array.');
-        }
+    public function getChildElementById(string $id): Element
+    {
         return $this;
     }
 
-    /**
-     * Retorna todos os elementos filho
-     */
-    public function getChildElements()
+    public function setAttributes(array $atributes = ['key' => 'value']): Element
     {
-        return $this->innerElement;
-    }
-
-
-    public function getChildElementByTag(string $tag)
-    {
-        $tag = ucfirst(strtolower($tag));
-
-        if (!empty($this->innerElement)) {
-
-            foreach ($this->innerElements as $element) {
-
-                $elements = [];
-
-                if ($element instanceof $tag) {
-
-                    $elements[] = $element;
-                }
-
-                $elementsInElement = $element->getChildElementByTag($tag);
-
-                if (!empty($elementsInElement)) {
-
-                    foreach ($elementsInElement as $elementInElement) {
-
-                        $elements[] = $elementInElement;
-                    }
-                }
-            }
-
-            if (!empty($elements)) {
-
-                return $elements;
-            } else {
-
-                die('Error! Tag not found.');
-            }
-        } else {
-
-            die('Error! No child element found.');
-        }
-    }
-
-    /**
-     * Busca um elemento no qual tem o id correspondente
-     */
-    public function getChildElementById(string $id)
-    {
-
-        if (!empty($this->innerElements)) {
-
-            foreach ($this->innerElements as $element) {
-
-                if (str_contains($element->openTag, "id=$id")) {
-
-                    return $element;
-                } else {
-
-                    $element->getChildElementById($id);
-                }
-            }
-
-
-            die('Error! Tag not found.');
-        } else {
-
-            die('Error! No child element found.');
-        }
-    }
-
-    /**
-     * Busca os elementos no qual tem o atributo correspondente
-     */
-    public function getChildElementByAttribute(string $attribute)
-    {
-
-        if (!empty($this->innerElements)) {
-
-            foreach ($this->innerElements as $element) {
-
-                if (str_contains($element->openTag, "attribute=$attribute")) {
-
-                    return $element;
-                } else {
-
-                    $element->getChildElementByAttribute($attribute);
-                }
-            }
-
-
-            die('Error! Tag not found.');
-        } else {
-
-            die('Error! No child element found.');
-        }
-    }
-
-    /**
-     * Define um atributo da tag html, no parametro $key passa-se o nome do atributo,
-     * e no parametro $value o valor
-     */
-    public function setAttribute(string $key, string $value)
-    {
-        $this->openTag = str_replace('_var_', "$key='$value' _var_", $this->openTag);
-        return $this;
-    }
-
-    /**
-     * Define varios atributos de uma só vez. Passa-se um array em cada valor
-     * tem uma chave e valor correspondente
-     */
-    public function setAttributes(array $atributes = ['key' => 'value'])
-    {
-        foreach ($atributes as $key => $value) {
-
-            $this->openTag = str_replace('_var_', "$key='$value' _var_", $this->openTag);
-        }
-
         return $this;
     }
 
@@ -220,13 +64,13 @@ abstract class Element
             die('Error! Accesskey attribute must be one character.');
         }
 
-        $this->openTag = str_replace('_var_', "accesskey='$accesskey' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "accesskey='$accesskey' _var_", $this->get_tag()));
         return $this;
     }
 
     public function class(string $class)
     {
-        $this->openTag = str_replace('_var_', "class='$class' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "class='$class' _var_", $this->get_tag()));
         return $this;
     }
 
@@ -237,13 +81,13 @@ abstract class Element
             die('Error! Contenteditable attribute must be "true" or "false".');
         }
 
-        $this->openTag = str_replace('_var_', "contenteditable='$contenteditable' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "contenteditable='$contenteditable' _var_", $this->get_tag()));
         return $this;
     }
 
     public function data(string $data_sufix, string $value)
     {
-        $this->openTag = str_replace('_var_', "data-$data_sufix='$value' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "data-$data_sufix='$value' _var_", $this->get_tag()));
         return $this;
     }
 
@@ -254,7 +98,7 @@ abstract class Element
             die('Error! Value invalid');
         }
 
-        $this->openTag = str_replace('_var_', "dir='$dir' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "dir='$dir' _var_", $this->get_tag()));
         return $this;
     }
 
@@ -265,13 +109,13 @@ abstract class Element
             die('Error! Draggable attribute must be "true", "false" or "auto".');
         }
 
-        $this->openTag = str_replace('_var_', "draggable='$draggable' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "draggable='$draggable' _var_", $this->get_tag()));
         return $this;
     }
 
     public function hidden()
     {
-        $this->openTag = str_replace('_var_', "_var_ hidden", $this->openTag);
+        $this->set_tag(str_replace('_var_', "_var_ hidden", $this->get_tag()));
         return $this;
     }
 
@@ -282,13 +126,13 @@ abstract class Element
             die('Error! Id attribute contain a space character.');
         }
 
-        $this->openTag = str_replace('_var_', "id='$id' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "id='$id' _var_", $this->get_tag()));
         return $this;
     }
 
     public function lang(string $lang = 'en')
     {
-        $this->openTag = str_replace('_var_', "lang='$lang' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "lang='$lang' _var_", $this->get_tag()));
         return $this;
     }
 
@@ -299,13 +143,13 @@ abstract class Element
             die('Error! Spellcheck attribute must be "true" or "false".');
         }
 
-        $this->openTag = str_replace('_var_', "spellcheck='$spellcheck' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "spellcheck='$spellcheck' _var_", $this->get_tag()));
         return $this;
     }
 
     public function style(string $css)
     {
-        $this->openTag = str_replace('_var_', "style='$css' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "style='$css' _var_", $this->get_tag()));
         return $this;
     }
 
@@ -316,13 +160,13 @@ abstract class Element
             die('Error! Tabindex attribute must be greater or equal to 1.');
         }
 
-        $this->openTag = str_replace('_var_', "tabindex='$tabindex' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "tabindex='$tabindex' _var_", $this->get_tag()));
         return $this;
     }
 
     public function title(string $title)
     {
-        $this->openTag = str_replace('_var_', "title='$title' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "title='$title' _var_", $this->get_tag()));
         return $this;
     }
 
@@ -333,7 +177,7 @@ abstract class Element
             die('Error! Translate attribute must be "yes" or "no".');
         }
 
-        $this->openTag = str_replace('_var_', "translate='$translate' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "translate='$translate' _var_", $this->get_tag()));
         return $this;
     }
 
@@ -347,21 +191,21 @@ abstract class Element
 
     protected function href(string $href)
     {
-        $this->openTag = str_replace('_var_', "href='$href' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "href='$href' _var_", $this->get_tag()));
     }
 
     protected function media(string $media)
     {
-        $this->openTag = str_replace('_var_', "media='$media' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "media='$media' _var_", $this->get_tag()));
     }
 
     protected function rel(string $rel)
     {
-        $this->openTag = str_replace('_var_', "rel='$rel' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "rel='$rel' _var_", $this->get_tag()));
     }
 
     protected function type(string $type)
     {
-        $this->openTag = str_replace('_var_', "type='$type' _var_", $this->openTag);
+        $this->set_tag(str_replace('_var_', "type='$type' _var_", $this->get_tag()));
     }
 }

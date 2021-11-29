@@ -2,13 +2,12 @@
 
 namespace WilliamSampaio\PageBuilder;
 
-class Br extends Element
+class Br extends SingleElement
 {
     public function __construct()
     {
         parent::__construct();
 
-        $this->openTag = "<br _var_>";
-        $this->closeTag = '';
+        $this->setTag("<br _var_>");
     }
 }
