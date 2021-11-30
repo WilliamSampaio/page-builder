@@ -2,210 +2,192 @@
 
 namespace WilliamSampaio\PageBuilder;
 
-abstract class Element
+class Element
 {
-    protected function get_tag(): string
-    {
-        return '';
-    }
+    /**
+     * GLOBAL ATTRIBUTES
+     */
+    const GLOBAL_ATTR_ACCESSKEY = 'accesskey';
+    const GLOBAL_ATTR_CLASS = 'class';
+    const GLOBAL_ATTR_CONTENTEDITABLE = 'contenteditable';
+    const GLOBAL_ATTR_DATA = 'data';
+    const GLOBAL_ATTR_DIR = 'dir';
+    const GLOBAL_ATTR_DRAGGABLE = 'draggable';
+    const GLOBAL_ATTR_HIDDEN = 'hidden';
+    const GLOBAL_ATTR_ID = 'id';
+    const GLOBAL_ATTR_LANG = 'lang';
+    const GLOBAL_ATTR_SPELLCHECK = 'spellcheck';
+    const GLOBAL_ATTR_STYLE = 'style';
+    const GLOBAL_ATTR_TABINDEX = 'tabindex';
+    const GLOBAL_ATTR_TITLE = 'title';
+    const GLOBAL_ATTR_TRANSLATE = 'translate';
 
-    protected function set_tag(string $tag): void
-    {
-        return;
-    }
+    /**
+     * OTHER ATTRIBUTES
+     */
+    const ATTR_HREF = 'href';
+    const ATTR_MEDIA = 'media';
+    const ATTR_REL = 'rel';
+    const ATTR_SRC = 'src';
+    const ATTR_TYPE = 'type';
 
-    protected function prepare(): string
-    {
-        return '';
-    }
+    /**
+     * CONSTANT - ATTRIBUTES VALUES
+     */
+    const VALUE_TRUE = 'true';
+    const VALUE_FALSE = 'false';
+    const VALUE_AUTO = 'auto';
 
-    public function detonate(): void
-    {
-        return;
-    }
+    /**
+     * LANG CONSTANTS
+     */
+    const LANG_ENGLISH = 'en';
+    const LANG_PORTUGUEASE_BR = 'pt-br';
 
-    public function addChildElements(): Element
-    {
-        return $this;
-    }
+    /**
+     * TYPE CONSTANTS
+     */
+    const TYPE_CSS = 'text/css';
 
-    public function getChildElements(): array
+    /**
+     * BODY ELEMENT
+     */
+    public static function body($attributes = [], $innerElements = [])
     {
-        return [];
-    }
-
-    public function getChildElementByTag(string $tag): array
-    {
-        return [];
-    }
-
-    public function getChildElementById(string $id): Element
-    {
-        return $this;
-    }
-
-    public function setAttributes(array $atributes = ['key' => 'value']): Element
-    {
-        return $this;
+        return '<body ' . self::process_attributes($attributes) . '>' . self::process_elements($innerElements) . '</body>';
     }
 
     /**
-     * ABAIXO FUNÇÕES EM QUE TODOS OS TIPOS DE ELEMENTOS SUPORTAM,
-     * OS GLOBAL ATTRIBUTES!
-     * 
-     * 
-     * 
+     * BR ELEMENT
      */
-
-    public function accesskey(string $accesskey)
+    public static function br($attributes = [])
     {
-        if (strlen($accesskey) > 1) {
-
-            die('Error! Accesskey attribute must be one character.');
-        }
-
-        $this->set_tag(str_replace('_var_', "accesskey='$accesskey' _var_", $this->get_tag()));
-        return $this;
-    }
-
-    public function class(string $class)
-    {
-        $this->set_tag(str_replace('_var_', "class='$class' _var_", $this->get_tag()));
-        return $this;
-    }
-
-    public function contenteditable(string $contenteditable)
-    {
-        if ($contenteditable != 'true' and $contenteditable != 'false') {
-
-            die('Error! Contenteditable attribute must be "true" or "false".');
-        }
-
-        $this->set_tag(str_replace('_var_', "contenteditable='$contenteditable' _var_", $this->get_tag()));
-        return $this;
-    }
-
-    public function data(string $data_sufix, string $value)
-    {
-        $this->set_tag(str_replace('_var_', "data-$data_sufix='$value' _var_", $this->get_tag()));
-        return $this;
-    }
-
-    public function dir(string $dir)
-    {
-        if ($dir != 'ltr' and $dir != 'rtl' and $dir != 'auto') {
-
-            die('Error! Value invalid');
-        }
-
-        $this->set_tag(str_replace('_var_', "dir='$dir' _var_", $this->get_tag()));
-        return $this;
-    }
-
-    public function draggable(string $draggable)
-    {
-        if ($draggable != 'true' and $draggable != 'false' and $draggable != 'auto') {
-
-            die('Error! Draggable attribute must be "true", "false" or "auto".');
-        }
-
-        $this->set_tag(str_replace('_var_', "draggable='$draggable' _var_", $this->get_tag()));
-        return $this;
-    }
-
-    public function hidden()
-    {
-        $this->set_tag(str_replace('_var_', "_var_ hidden", $this->get_tag()));
-        return $this;
-    }
-
-    public function id(string $id)
-    {
-        if (strpos($id, ' ')) {
-
-            die('Error! Id attribute contain a space character.');
-        }
-
-        $this->set_tag(str_replace('_var_', "id='$id' _var_", $this->get_tag()));
-        return $this;
-    }
-
-    public function lang(string $lang = 'en')
-    {
-        $this->set_tag(str_replace('_var_', "lang='$lang' _var_", $this->get_tag()));
-        return $this;
-    }
-
-    public function spellcheck(string $spellcheck)
-    {
-        if ($spellcheck != 'true' and $spellcheck != 'false') {
-
-            die('Error! Spellcheck attribute must be "true" or "false".');
-        }
-
-        $this->set_tag(str_replace('_var_', "spellcheck='$spellcheck' _var_", $this->get_tag()));
-        return $this;
-    }
-
-    public function style(string $css)
-    {
-        $this->set_tag(str_replace('_var_', "style='$css' _var_", $this->get_tag()));
-        return $this;
-    }
-
-    public function tabindex(int $tabindex)
-    {
-        if ($tabindex < 1) {
-
-            die('Error! Tabindex attribute must be greater or equal to 1.');
-        }
-
-        $this->set_tag(str_replace('_var_', "tabindex='$tabindex' _var_", $this->get_tag()));
-        return $this;
-    }
-
-    public function title(string $title)
-    {
-        $this->set_tag(str_replace('_var_', "title='$title' _var_", $this->get_tag()));
-        return $this;
-    }
-
-    public function translate(string $translate)
-    {
-        if ($translate != 'yes' and $translate != 'no') {
-
-            die('Error! Translate attribute must be "yes" or "no".');
-        }
-
-        $this->set_tag(str_replace('_var_', "translate='$translate' _var_", $this->get_tag()));
-        return $this;
+        return '<br ' . self::process_attributes($attributes) . '>';
     }
 
     /**
-     * FUNÇÕES PARA OS ATRIBUTOS NÃO GLOBAIS!
-     * 
-     * 
-     * 
-     * 
+     * DIV ELEMENT
      */
-
-    protected function href(string $href)
+    public static function div($attributes = [], $innerElements = [])
     {
-        $this->set_tag(str_replace('_var_', "href='$href' _var_", $this->get_tag()));
+        return '<div ' . self::process_attributes($attributes) . '>' . self::process_elements($innerElements) . '</div>';
     }
 
-    protected function media(string $media)
+    /**
+     * HEADING ELEMENTS
+     */
+    public static function h1($attributes = [], $innerElements = [])
     {
-        $this->set_tag(str_replace('_var_', "media='$media' _var_", $this->get_tag()));
+        return "<h1 " . self::process_attributes($attributes) . '>' . self::process_elements($innerElements) . "</h1>";
     }
 
-    protected function rel(string $rel)
+    public static function h2($attributes = [], $innerElements = [])
     {
-        $this->set_tag(str_replace('_var_', "rel='$rel' _var_", $this->get_tag()));
+        return "<h2 " . self::process_attributes($attributes) . '>' . self::process_elements($innerElements) . "</h2>";
     }
 
-    protected function type(string $type)
+    public static function h3($attributes = [], $innerElements = [])
     {
-        $this->set_tag(str_replace('_var_', "type='$type' _var_", $this->get_tag()));
+        return "<h3 " . self::process_attributes($attributes) . '>' . self::process_elements($innerElements) . "</h3>";
+    }
+
+    public static function h4($attributes = [], $innerElements = [])
+    {
+        return "<h4 " . self::process_attributes($attributes) . '>' . self::process_elements($innerElements) . "</h4>";
+    }
+
+    public static function h5($attributes = [], $innerElements = [])
+    {
+        return "<h5 " . self::process_attributes($attributes) . '>' . self::process_elements($innerElements) . "</h5>";
+    }
+
+    public static function h6($attributes = [], $innerElements = [])
+    {
+        return "<h6 " . self::process_attributes($attributes) . '>' . self::process_elements($innerElements) . "</h6>";
+    }
+
+    /**
+     * HEAD ELEMENT
+     */
+    public static function head($innerElements = [])
+    {
+        return '<head>' . self::process_elements($innerElements) . '</head>';
+    }
+
+    /**
+     * HR ELEMENT
+     */
+    public static function hr($attributes = [])
+    {
+        return '<hr ' . self::process_attributes($attributes) . '>';
+    }
+
+    /**
+     * HTML ELEMENT
+     */
+    public static function html($attributes = [], $innerElements = []): string
+    {
+        return '<html ' . self::process_attributes($attributes) . '>' . self::process_elements($innerElements) . '</html>';
+    }
+
+    /**
+     * IMG ELEMENT
+     */
+    public static function img($attributes = []): string
+    {
+        return '<img ' . self::process_attributes($attributes) . '>';
+    }
+
+    /**
+     * LINK ELEMENT
+     */
+    public static function link($attributes = []): string
+    {
+        return '<link ' . self::process_attributes($attributes) . '>';
+    }
+
+    /**
+     * PARAGRAPH ELEMENT
+     */
+    public static function p($attributes = [], $innerElements = [])
+    {
+        return '<p ' . self::process_attributes($attributes) . '>' . self::process_elements($innerElements) . '</p>';
+    }
+
+    /**
+     * STYLE ELEMENT
+     */
+    public static function style($attributes = [], $innerElements = [])
+    {
+        return '<style ' . self::process_attributes($attributes) . '>' . self::process_elements($innerElements) . '</style>';
+    }
+
+    /**
+     * TITLE ELEMENT
+     */
+    public static function title(string $title): string
+    {
+        return '<title>' . $title . '</title>';
+    }
+
+    /**
+     * INTERNAL PROCESSES
+     */
+    private static function process_attributes(array $attributes): string
+    {
+        $attributes_processed = '';
+        foreach ($attributes as $key => $value) {
+            $attributes_processed .= $key . "='" . $value . "' ";
+        }
+        return $attributes_processed;
+    }
+
+    private static function process_elements(array $elements): string
+    {
+        $elements_processed = '';
+        foreach ($elements as $element) {
+            $elements_processed .= $element;
+        }
+        return $elements_processed;
     }
 }

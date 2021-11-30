@@ -2,26 +2,66 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use WilliamSampaio\PageBuilder\AddBootstrapCss;
-use WilliamSampaio\PageBuilder\Body;
-use WilliamSampaio\PageBuilder\Br;
-use WilliamSampaio\PageBuilder\Div;
-use WilliamSampaio\PageBuilder\Head;
-use WilliamSampaio\PageBuilder\Heading;
-use WilliamSampaio\PageBuilder\Hr;
-use WilliamSampaio\PageBuilder\Html;
-use WilliamSampaio\PageBuilder\Image;
-use WilliamSampaio\PageBuilder\Paragraph;
-use WilliamSampaio\PageBuilder\Style;
-use WilliamSampaio\PageBuilder\Title;
+use WilliamSampaio\PageBuilder\Bootstrap;
+use WilliamSampaio\PageBuilder\Element;
 
-$name_date = 'William Benjamim Menezes Sampaio, ' . date("d/m/Y H:i:s");
+$html = new Element;
+
+echo $html::html(
+    [$html::GLOBAL_ATTR_LANG => $html::LANG_PORTUGUEASE_BR],
+
+    [
+        // head element
+        $html::head([
+            $html::title('Page Builder - Example'),
+            Bootstrap::addBootstrapCss(),
+            $html::style(
+                [$html::ATTR_TYPE => $html::TYPE_CSS],
+                ['body{background-color:lightgray;}']
+            )
+        ]),
+
+        // body element
+        $html::body(
+            ['id' => 'body'],
+
+            [
+                $html::h1(
+                    [$html::GLOBAL_ATTR_STYLE => 'color:red;'],
+                    ['olá mundo!']
+                ),
+
+                $html::br(), $html::br(), $html::br(),
+
+                $html::h2(
+                    [$html::GLOBAL_ATTR_STYLE => 'color:blue;font-style:italic;'],
+                    ['teste...']
+                ),
+
+                $html::h6(
+                    [$html::GLOBAL_ATTR_STYLE => 'color:purple;font-style:italic;'],
+                    ['teste...']
+                ),
+
+                $html::hr(),
+
+                $html::p([],['Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo non sed alias distinctio asperiores recusandae labore nemo vitae aliquam id voluptatum, ipsa aut natus maxime doloremque perferendis neque dolores accusamus!']),
+
+                $html::img([
+                    $html::ATTR_SRC => 'https://files.tecnoblog.net/wp-content/uploads/2021/01/o_que_e_php_unsplash-700x467.jpg'
+                ])
+            ]
+        )
+    ]
+);
+
+/*$name_date = 'William Benjamim Menezes Sampaio, ' . date("d/m/Y H:i:s");
 
 (new Heading([
     'olá mundo',
     (new Br)->id('teste'),
     'cadassistrar'
-], 1))->class('teste...')->detonate();
+], 1))->class('teste...')->detonate();*/
 
 /*$new_page = (new Html([
 
