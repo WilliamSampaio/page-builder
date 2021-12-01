@@ -213,11 +213,35 @@ class Element
     }
 
     /**
+     * LI ELEMENT
+     */
+    public static function li($attributes = [], $innerElements = [])
+    {
+        return '<li ' . self::process_attributes($attributes) . '>' . self::process_elements($innerElements) . '</li>';
+    }
+
+    /**
      * LINK ELEMENT
      */
     public static function link($attributes = []): string
     {
         return '<link ' . self::process_attributes($attributes) . '>';
+    }
+
+    /**
+     * NAV ELEMENT
+     */
+    public static function nav($attributes = [], $innerElements = [])
+    {
+        return '<nav ' . self::process_attributes($attributes) . '>' . self::process_elements($innerElements) . '</nav>';
+    }
+
+    /**
+     * OL ELEMENT
+     */
+    public static function ol($attributes = [], $innerElements = [])
+    {
+        return '<ol ' . self::process_attributes($attributes) . '>' . self::process_elements($innerElements) . '</ol>';
     }
 
     /**
