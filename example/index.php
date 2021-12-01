@@ -7,18 +7,23 @@ use WilliamSampaio\PageBuilder\Element;
 
 $html = new Element;
 
+$dados_usuario = ['nome' => 'Erllison', 'idade' => '18'];
+
 echo $html::html(
     [$html::GLOBAL_ATTR_LANG => $html::LANG_PORTUGUEASE_BR],
 
     [
         // head element
         $html::head([
+
+            $html::comment("Aqui é um comentario!"),
+
             $html::title('Page Builder - Example'),
             Bootstrap::addBootstrapCss(),
-            $html::style(
-                [$html::ATTR_TYPE => $html::TYPE_CSS],
-                ['body{background-color:lightgray;}']
-            )
+            // $html::style(
+            //     [$html::ATTR_TYPE => $html::TYPE_CSS],
+            //     ['body{background-color:lightgray;}']
+            // )
         ]),
 
         // body element
@@ -26,10 +31,37 @@ echo $html::html(
             ['id' => 'body'],
 
             [
-                $html::h1(
-                    [$html::GLOBAL_ATTR_STYLE => 'color:red;'],
-                    ['olá mundo!']
+                $html::div(
+                    [$html::GLOBAL_ATTR_CLASS => 'container'],
+                    [
+                        $html::div(
+                            [$html::GLOBAL_ATTR_CLASS => 'row'],
+                            [
+                                $html::h1(
+                                    [$html::GLOBAL_ATTR_STYLE => 'color:red;'],
+                                    ['olá mundo!']
+                                ),
+
+                                $html::form(
+                                    [$html::ATTR_ACTION => 'index.php', $html::ATTR_METHOD => 'get'],
+                                    [
+                                        Bootstrap::addBootstrapInputText('nome', 'nome', 'Digite seu Nome: ', 'Digite aqui seu nome!'),
+                                        $html::button([$html::ATTR_TYPE => $html::TYPE_SUBMIT], ['ENVIAR'])
+                                    ]
+                                )
+                            ]
+                        )
+                    ]
                 ),
+
+
+
+                $html::h2(
+                    ['style' => 'font-style:bold;color:red;'],
+                    ['Informações usuarios']
+                ),
+
+                $html::p([], ['Nome: ' . $dados_usuario['nome'], $html::br(), 'Idade: ' . $dados_usuario['idade']]),
 
                 $html::br(), $html::br(), $html::br(),
 
@@ -45,7 +77,7 @@ echo $html::html(
 
                 $html::hr(),
 
-                $html::p([],['Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo non sed alias distinctio asperiores recusandae labore nemo vitae aliquam id voluptatum, ipsa aut natus maxime doloremque perferendis neque dolores accusamus!']),
+                $html::p([], ['Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo non sed alias distinctio asperiores recusandae labore nemo vitae aliquam id voluptatum, ipsa aut natus maxime doloremque perferendis neque dolores accusamus!']),
 
                 $html::img([
                     $html::ATTR_SRC => 'https://files.tecnoblog.net/wp-content/uploads/2021/01/o_que_e_php_unsplash-700x467.jpg'
